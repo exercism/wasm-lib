@@ -1,6 +1,6 @@
-import { resolve } from "path";
-import { readFileSync } from "fs";
-const initWabt = require("wabt");
+import { resolve } from "node:path";
+import { readFileSync } from "node:fs";
+import initWabt from "wabt";
 
 let defaultWabtOptions = {
   exceptions: true,
