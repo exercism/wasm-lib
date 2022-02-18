@@ -1,4 +1,3 @@
-import { resolve } from "node:path";
 import { readFileSync } from "node:fs";
 import initWabt from "wabt";
 
@@ -19,7 +18,7 @@ let defaultWabtOptions = {
 // Reads a *.wat file, parses to a *.wasm binary in-memory, and then compiles to a Wasm module we can instantiate
 export async function compileWat(relativePath, optionsOverrides) {
   const wabt = await initWabt();
-  const watPath = resolve(__dirname, relativePath);
+  const watPath = new URL(relativePath, import.meta.url);
   return wabt
     .parseWat(watPath, readFileSync(watPath, "utf8"), {
       ...defaultWabtOptions,
