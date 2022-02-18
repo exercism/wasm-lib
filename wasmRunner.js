@@ -1,5 +1,3 @@
-import { TextDecoder, TextEncoder } from "util";
-
 export class WasmRunner {
   constructor(wasmModule) {
     this.wasmModule = wasmModule;
