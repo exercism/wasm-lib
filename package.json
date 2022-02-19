@@ -8,6 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/exercism/wasm-lib.git"
   },
+  "main": "index.mjs",
   "devDependencies": {
     "@exercism/babel-preset-javascript": "^0.1.2",
     "@exercism/eslint-config-javascript": "^0.6.0",
