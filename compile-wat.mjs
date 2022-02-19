@@ -16,9 +16,8 @@ let defaultWabtOptions = {
 };
 
 // Reads a *.wat file, parses to a *.wasm binary in-memory, and then compiles to a Wasm module we can instantiate
-export async function compileWat(relativePath, optionsOverrides) {
+export async function compileWat(watPath, optionsOverrides) {
   const wabt = await initWabt();
-  const watPath = new URL(relativePath, import.meta.url);
   return wabt
     .parseWat(watPath, readFileSync(watPath, "utf8"), {
       ...defaultWabtOptions,
