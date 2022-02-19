@@ -95,13 +95,31 @@ export class WasmRunner {
 
   /**
    * @param {number} byteOffset
+   * @param {number} length number of elements of type f64
+   * @returns {string}
+   */
+  get_mem_as_utf8(byteOffset, length) {
+    this.log_mem_validate(byteOffset, length);
+    const segment = new Uint8Array(this.exports.mem.buffer, byteOffset, length);
+    return WasmRunner.utf8Decoder.decode(segment);
+  }
+
+  /**
+   * @param {number} byteOffset
    * @param {number} length length of UTF-8 encoded string in bytes
    */
   log_mem_as_utf8(byteOffset, length) {
+    console.log(this.get_mem_as_utf8(byteOffset, length));
+  }
+
+  /**
+   * @param {number} byteOffset
+   * @param {number} length number of elements of type f64
+   * @returns {Int8Array}
+   */
+  get_mem_as_i8(byteOffset, length) {
     this.log_mem_validate(byteOffset, length);
-    const segment = new Uint8Array(this.exports.mem.buffer, byteOffset, length);
-    const str = WasmRunner.utf8Decoder.decode(segment);
-    console.log(str);
+    return new Int8Array(this.exports.mem.buffer, byteOffset, length);
   }
 
   /**
@@ -109,9 +127,17 @@ export class WasmRunner {
    * @param {number} length number of elements of type i8
    */
   log_mem_as_i8(byteOffset, length) {
+    console.log(this.get_mem_as_i8(byteOffset, length));
+  }
+
+  /**
+   * @param {number} byteOffset
+   * @param {number} length number of elements of type f64
+   * @returns {Uint8Array}
+   */
+  get_mem_as_u8(byteOffset, length) {
     this.log_mem_validate(byteOffset, length);
-    const arr = new Int8Array(this.exports.mem.buffer, byteOffset, length);
-    console.log(arr);
+    return new Uint8Array(this.exports.mem.buffer, byteOffset, length);
   }
 
   /**
@@ -119,9 +145,17 @@ export class WasmRunner {
    * @param {number} length number of elements of type u8
    */
   log_mem_as_u8(byteOffset, length) {
+    console.log(this.get_mem_as_u8(byteOffset, length));
+  }
+
+  /**
+   * @param {number} byteOffset
+   * @param {number} length number of elements of type f64
+   * @returns {Int16Array}
+   */
+  get_mem_as_i16(byteOffset, length) {
     this.log_mem_validate(byteOffset, length);
-    const arr = new Uint8Array(this.exports.mem.buffer, byteOffset, length);
-    console.log(arr);
+    return new Int16Array(this.exports.mem.buffer, byteOffset, length);
   }
 
   /**
@@ -129,9 +163,17 @@ export class WasmRunner {
    * @param {number} length number of elements of type i16
    */
   log_mem_as_i16(byteOffset, length) {
+    console.log(this.get_mem_as_i16(byteOffset, length));
+  }
+
+  /**
+   * @param {number} byteOffset
+   * @param {number} length number of elements of type f64
+   * @returns {Uint16Array}
+   */
+  get_mem_as_u16(byteOffset, length) {
     this.log_mem_validate(byteOffset, length);
-    const arr = new Int16Array(this.exports.mem.buffer, byteOffset, length);
-    console.log(arr);
+    return new Uint16Array(this.exports.mem.buffer, byteOffset, length);
   }
 
   /**
@@ -139,9 +181,17 @@ export class WasmRunner {
    * @param {number} length number of elements of type u16
    */
   log_mem_as_u16(byteOffset, length) {
+    console.log(this.get_mem_as_u16(byteOffset, length));
+  }
+
+  /**
+   * @param {number} byteOffset
+   * @param {number} length number of elements of type f64
+   * @returns {Int32Array}
+   */
+  get_mem_as_i32(byteOffset, length) {
     this.log_mem_validate(byteOffset, length);
-    const arr = new Uint16Array(this.exports.mem.buffer, byteOffset, length);
-    console.log(arr);
+    return new Int32Array(this.exports.mem.buffer, byteOffset, length);
   }
 
   /**
@@ -149,9 +199,17 @@ export class WasmRunner {
    * @param {number} length number of elements of type i32
    */
   log_mem_as_i32(byteOffset, length) {
+    console.log(this.get_mem_as_i32(byteOffset, length));
+  }
+
+  /**
+   * @param {number} byteOffset
+   * @param {number} length number of elements of type f64
+   * @returns {Uint32Array}
+   */
+  get_mem_as_u32(byteOffset, length) {
     this.log_mem_validate(byteOffset, length);
-    const arr = new Int32Array(this.exports.mem.buffer, byteOffset, length);
-    console.log(arr);
+    return new Uint32Array(this.exports.mem.buffer, byteOffset, length);
   }
 
   /**
@@ -159,9 +217,17 @@ export class WasmRunner {
    * @param {number} length number of elements of type u32
    */
   log_mem_as_u32(byteOffset, length) {
+    console.log(this.get_mem_as_u32(byteOffset, length));
+  }
+
+  /**
+   * @param {number} byteOffset
+   * @param {number} length number of elements of type f64
+   * @returns {BigInt64Array}
+   */
+  get_mem_as_i64(byteOffset, length) {
     this.log_mem_validate(byteOffset, length);
-    const arr = new Uint32Array(this.exports.mem.buffer, byteOffset, length);
-    console.log(arr);
+    return new BigInt64Array(this.exports.mem.buffer, byteOffset, length);
   }
 
   /**
@@ -169,9 +235,17 @@ export class WasmRunner {
    * @param {number} length number of elements of type i64
    */
   log_mem_as_i64(byteOffset, length) {
+    console.log(this.get_mem_as_i64(byteOffset, length));
+  }
+
+  /**
+   * @param {number} byteOffset
+   * @param {number} length number of elements of type f64
+   * @returns {BigUint64Array}
+   */
+  get_mem_as_u64(byteOffset, length) {
     this.log_mem_validate(byteOffset, length);
-    const arr = new BigInt64Array(this.exports.mem.buffer, byteOffset, length);
-    console.log(arr);
+    return new BigUint64Array(this.exports.mem.buffer, byteOffset, length);
   }
 
   /**
@@ -179,9 +253,17 @@ export class WasmRunner {
    * @param {number} length number of elements of type u64
    */
   log_mem_as_u64(byteOffset, length) {
+    console.log(this.get_mem_as_u64(byteOffset, length));
+  }
+
+  /**
+   * @param {number} byteOffset
+   * @param {number} length number of elements of type f64
+   * @returns {Float32Array}
+   */
+  get_mem_as_f32(byteOffset, length) {
     this.log_mem_validate(byteOffset, length);
-    const arr = new BigUint64Array(this.exports.mem.buffer, byteOffset, length);
-    console.log(arr);
+    return new Float32Array(this.exports.mem.buffer, byteOffset, length);
   }
 
   /**
@@ -189,9 +271,17 @@ export class WasmRunner {
    * @param {number} length number of elements of type f32
    */
   log_mem_as_f32(byteOffset, length) {
+    console.log(this.get_mem_as_f32(byteOffset, length));
+  }
+
+  /**
+   * @param {number} byteOffset
+   * @param {number} length number of elements of type f64
+   * @returns {Float64Array}
+   */
+  get_mem_as_f64(byteOffset, length) {
     this.log_mem_validate(byteOffset, length);
-    const arr = new Float32Array(this.exports.mem.buffer, byteOffset, length);
-    console.log(arr);
+    return new Float64Array(this.exports.mem.buffer, byteOffset, length);
   }
 
   /**
@@ -199,8 +289,6 @@ export class WasmRunner {
    * @param {number} length number of elements of type f64
    */
   log_mem_as_f64(byteOffset, length) {
-    this.log_mem_validate(byteOffset, length);
-    const arr = new Float64Array(this.exports.mem.buffer, byteOffset, length);
-    console.log(arr);
+    console.log(this.get_mem_as_f64(byteOffset, length));
   }
 }
