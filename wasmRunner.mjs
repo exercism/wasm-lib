@@ -95,13 +95,32 @@ export class WasmRunner {
 
   /**
    * @param {number} byteOffset
-   * @param {number} length number of elements of type f64
+   * @param {number} length number of utf8 chars / bytes
    * @returns {string}
    */
   get_mem_as_utf8(byteOffset, length) {
     this.log_mem_validate(byteOffset, length);
     const segment = new Uint8Array(this.exports.mem.buffer, byteOffset, length);
     return WasmRunner.utf8Decoder.decode(segment);
+  }
+
+  /**
+   * @param {number} byteOffset
+   * @param {number} length number of elements of utf8 chars / bytes
+   */
+  set_mem_as_utf8(byteOffset, bufferLength, inputString) {
+    this.log_mem_validate(byteOffset, bufferLength);
+    const segment = new Uint8Array(
+      this.exports.mem.buffer,
+      byteOffset,
+      bufferLength
+    );
+    let { read } = WasmRunner.utf8Encoder.encodeInto(inputString, segment);
+    if (read < inputString.length) {
+      console.log(
+        `Warning: Buffer of size ${bufferLength} was not large enough to write string of size ${inputString.length}. Truncated after ${read} characters`
+      );
+    }
   }
 
   /**
@@ -114,7 +133,7 @@ export class WasmRunner {
 
   /**
    * @param {number} byteOffset
-   * @param {number} length number of elements of type f64
+   * @param {number} length number of elements of type i8
    * @returns {Int8Array}
    */
   get_mem_as_i8(byteOffset, length) {
@@ -132,7 +151,7 @@ export class WasmRunner {
 
   /**
    * @param {number} byteOffset
-   * @param {number} length number of elements of type f64
+   * @param {number} length number of elements of type u8
    * @returns {Uint8Array}
    */
   get_mem_as_u8(byteOffset, length) {
@@ -150,7 +169,7 @@ export class WasmRunner {
 
   /**
    * @param {number} byteOffset
-   * @param {number} length number of elements of type f64
+   * @param {number} length number of elements of type i16
    * @returns {Int16Array}
    */
   get_mem_as_i16(byteOffset, length) {
@@ -168,7 +187,7 @@ export class WasmRunner {
 
   /**
    * @param {number} byteOffset
-   * @param {number} length number of elements of type f64
+   * @param {number} length number of elements of type u16
    * @returns {Uint16Array}
    */
   get_mem_as_u16(byteOffset, length) {
@@ -186,7 +205,7 @@ export class WasmRunner {
 
   /**
    * @param {number} byteOffset
-   * @param {number} length number of elements of type f64
+   * @param {number} length number of elements of type i32
    * @returns {Int32Array}
    */
   get_mem_as_i32(byteOffset, length) {
@@ -204,7 +223,7 @@ export class WasmRunner {
 
   /**
    * @param {number} byteOffset
-   * @param {number} length number of elements of type f64
+   * @param {number} length number of elements of type u32
    * @returns {Uint32Array}
    */
   get_mem_as_u32(byteOffset, length) {
@@ -222,7 +241,7 @@ export class WasmRunner {
 
   /**
    * @param {number} byteOffset
-   * @param {number} length number of elements of type f64
+   * @param {number} length number of elements of type i64
    * @returns {BigInt64Array}
    */
   get_mem_as_i64(byteOffset, length) {
@@ -240,7 +259,7 @@ export class WasmRunner {
 
   /**
    * @param {number} byteOffset
-   * @param {number} length number of elements of type f64
+   * @param {number} length number of elements of type u64
    * @returns {BigUint64Array}
    */
   get_mem_as_u64(byteOffset, length) {
@@ -258,7 +277,7 @@ export class WasmRunner {
 
   /**
    * @param {number} byteOffset
-   * @param {number} length number of elements of type f64
+   * @param {number} length number of elements of type f32
    * @returns {Float32Array}
    */
   get_mem_as_f32(byteOffset, length) {
