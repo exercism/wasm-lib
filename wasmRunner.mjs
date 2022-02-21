@@ -1,11 +1,7 @@
 export class WasmRunner {
   constructor(wasmModule) {
     this.wasmModule = wasmModule;
-    this.linearMemory = new WebAssembly.Memory({ initial: 1 });
     return WebAssembly.instantiate(this.wasmModule, {
-      env: {
-        linearMemory: this.linearMemory,
-      },
       console: {
         log_i32_s: this.log_i32_s,
         log_i32_u: this.log_i32_u,
