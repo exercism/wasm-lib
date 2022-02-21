@@ -1,5 +1,6 @@
 {
   "name": "@exercism/wasm-lib",
+  "version": "0.1.0",
   "description": "",
   "author": "Sean McBride",
   "license": "MIT",
