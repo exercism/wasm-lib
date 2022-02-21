@@ -279,9 +279,69 @@ Justification: there is no true source of entropy in the WebAssembly abstract ma
 (import "math" "random" (func $random (result f64)))
 ```
 
-# JavaScript Utility Functions
+# JavaScript API
 
-In order to simplify unit tests, variants of some of the functions above are available to JavaScript. **These are not provided to the WebAssembly module as imports.**
+## WAT Tooling
+
+### compileWat(watPath, optionsOverrides)
+
+This function parses a `*.wat` file at the absolute path `watPath` and translates it into a `*.wasm` binary in the same directory.
+
+By default, several extensions are enabled:
+
+```js
+let defaultWabtOptions = {
+  exceptions: true,
+  mutable_globals: true,
+  set_float_to_int: true,
+  sign_extension: true,
+  simd: true,
+  threads: false,
+  multi_value: true,
+  bulk_memory: true,
+  reference_types: true,
+  annotations: true,
+  gc: false,
+};
+```
+
+See the [wabt.js documentation](https://www.npmjs.com/package/wabt) for details on this API. Detailed information on each proposal is available in the [WebAssembly specification repo](https://github.com/WebAssembly/proposals). Some of the proposals have been merged into the core specification and can be found under "Finished Proposals."
+
+Using this API looks something like the following
+
+```js
+import { compileWat, WasmRunner } from "wasm-lib";
+try {
+  const watPath = new URL("./two-fer.wat", import.meta.url);
+  const { buffer } = await compileWat(watPath);
+  const wasmModule = await WebAssembly.compile(buffer);
+} catch (err) {
+  console.log(`Error compiling *.wat: ${err}`);
+}
+```
+
+## WasmRunner
+
+WasmRunner is JavaScript class that encapsulates the process of instantiating a WebAssembly module with the track's standard library of imports.
+
+After executing the `compileWat` example, instantiating `wasmModule` would look as follows:
+
+```js
+let currentInstance = await new WasmRunner(wasmModule);
+```
+
+Via a getter, exports are delegated to the wrapped WebAssembly instance, so the exports API works identically as working directly with a WebAssembly instance JS object.
+
+```js
+let a = 1;
+let b = 2;
+let c = currentInstance.exports.add(a, b);
+expect(c).toEqual(a + b);
+```
+
+In order to simplify unit tests, some convenience methods are available on an instance of `WasmRunner` for interacting with the WebAssembly linear memory.
+
+Most of these functions provide bounds checking and return TypedArrays. However, a UTF8 setter `set_mem_as_utf8` is provided because it also handles encoding. Setting static arrays of other vectors is best accomplished via direct use of the TypedArray returned by the getter.
 
 ### get_mem_as_utf8(byteOffset, length)
 
