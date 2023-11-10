@@ -3,6 +3,7 @@ export class WasmRunner {
     this.wasmModule = wasmModule;
     return WebAssembly.instantiate(this.wasmModule, {
       console: {
+        log: this.log,
         log_i32_s: this.log_i32_s,
         log_i32_u: this.log_i32_u,
         log_i64_s: this.log_i64_s,
@@ -35,6 +36,13 @@ export class WasmRunner {
 
   get exports() {
     return this.instance.exports;
+  }
+
+  /**
+   * @param value
+   */
+  log(value) {
+    console.log(value);
   }
 
   /**

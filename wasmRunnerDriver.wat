@@ -1,4 +1,5 @@
 (module
+  (import "console" "log" (func $log (param i32)))
   (import "console" "log_i32_s" (func $log_i32_s (param i32)))
   (import "console" "log_i32_u" (func $log_i32_u (param i32)))
   (import "console" "log_i64_s" (func $log_i64_s (param i64)))
@@ -20,6 +21,10 @@
 
   (memory (export "mem") 1)
   (data (i32.const 64) "Goodbye, Mars!")
+
+  (func (export "test_log")
+    (call $log (i32.const 42))
+  )
 
   (func (export "test_log_i32_s")
     (call $log_i32_s (i32.const 99))

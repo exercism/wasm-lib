@@ -6,6 +6,7 @@ import { WasmRunner } from "./wasmRunner.mjs";
 
 let wasmModule;
 let currentInstance;
+let mock_log;
 let mock_log_i32_s;
 let mock_log_i32_u;
 let mock_log_i64_s;
@@ -36,6 +37,7 @@ beforeAll(async () => {
     console.log(`Error compiling *.wat: ${err}`);
     process.exit(1);
   }
+  mock_log = jest.spyOn(WasmRunner.prototype, "log");
   mock_log_i32_s = jest.spyOn(WasmRunner.prototype, "log_i32_s");
   mock_log_i32_u = jest.spyOn(WasmRunner.prototype, "log_i32_u");
   mock_log_i64_s = jest.spyOn(WasmRunner.prototype, "log_i64_s");
@@ -60,6 +62,7 @@ beforeAll(async () => {
 describe("WasmRunner", () => {
   beforeEach(async () => {
     currentInstance = null;
+    mock_log.mockClear();
     mock_log_i32_s.mockClear();
     mock_log_i32_u.mockClear();
     mock_log_i64_s.mockClear();
@@ -90,6 +93,15 @@ describe("WasmRunner", () => {
       console.log(`Error instantiating WebAssembly module: ${err}`);
       return Promise.reject();
     }
+  });
+
+  test("log", () => {
+    currentInstance.exports.test_log();
+    expect(mock_log).toHaveBeenCalled();
+    expect(mock_log.mock.calls.length).toBe(1);
+    expect(typeof mock_log.mock.calls[0][0]).toEqual("number");
+    expect(mock_log.mock.calls[0][0]).toBe(42);
+    expect(mock_console.mock.calls[0][0]).toEqual(42);
   });
 
   test("log_i32_s", () => {
