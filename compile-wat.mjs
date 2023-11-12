@@ -25,12 +25,6 @@ export async function compileWat(watPath, optionsOverrides) {
     ...defaultWabtOptions,
     ...optionsOverrides,
   });
-  
-  // Unconditionally write the desugared Form to the console
-  module.generateNames();
-  const text = module.toText({ foldExprs: false, inlineExport: false });
-  console.log(`Desugared Form: \n${text}`);
-  
   // Call validate on the text format so errors highlight source WAT
   module.validate();
 
